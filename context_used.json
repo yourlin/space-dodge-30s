@@ -1,0 +1,19 @@
+{
+  "schema_version": "gamefactory3a.context_used.v1",
+  "engine": "three_js",
+  "engine_api": "agent_skills/engine_context/three_js_api.md",
+  "skills": [
+    "agent_skills/setting_overview.md",
+    "agent_skills/game_design/SKILL.md",
+    "agent_skills/game_design/task_tracking.md",
+    "agent_skills/engine_context/engine_overview.md",
+    "agent_skills/code_gen/mechanic/game_generation.md"
+  ],
+  "examples": [
+    {
+      "path": "engine_adapters/three_js/examples/racing-example/src/index.js",
+      "role": "mechanic_example",
+      "purpose": ["public-adapter design", "module/plugin structure"]
+    }
+  ]
+}

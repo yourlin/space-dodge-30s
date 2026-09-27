@@ -1,0 +1,11 @@
+{
+  "name": "@a3game-game/space-dodge",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "是男人就坚持30秒 — 3D space bullet-hell survival.",
+  "main": "./src/index.js",
+  "exports": { ".": "./src/index.js" },
+  "peerDependencies": { "three": ">=0.170.0" },
+  "a3game": { "kind": "gameplay_package", "engine": "three_js", "genre": "survival_dodge", "api_version": "v1" }
+}

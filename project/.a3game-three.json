@@ -1,0 +1,11 @@
+{
+  "engine": "three_js",
+  "api_version": "v1",
+  "engine_version": "",
+  "engine_root": "",
+  "project_dir": "/Users/linyesh/playground/GameFactoryDemo/GameFactory-3A/test_data/outputs/space_dodge_30s/run_001/mechanic/space_dodge_core/project",
+  "project_name": "project",
+  "dev_server_port": 5173,
+  "runtime_control_port": 30040,
+  "package_manager": "npm"
+}

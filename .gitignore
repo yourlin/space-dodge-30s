@@ -1,0 +1,8 @@
+# Dependencies and build output
+node_modules/
+dist/
+
+# Generated reports and caches
+.a3game/reports/
+.DS_Store
+*.log
