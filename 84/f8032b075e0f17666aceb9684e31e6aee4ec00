@@ -1,0 +1,145 @@
+project/packages/space-dodge/src/view.js
+  s_07208af4d184fc::t_c5dec424183334 1-569
+mechanic_contract.json
+  s_07208af4d184fc::t_c5dec424183334 1-68
+project/packages/space-dodge/src/ui.js
+  s_07208af4d184fc::t_c5dec424183334 1-298
+project/packages/space-dodge/src/rules.js
+  s_07208af4d184fc::t_c5dec424183334 1-688
+.gitignore
+  s_07208af4d184fc::t_c5dec424183334 1-8
+context_used.json
+  s_07208af4d184fc::t_c5dec424183334 1-19
+project/packages/space-dodge/src/index.js
+  s_07208af4d184fc::t_c5dec424183334 1-132
+design.md
+  s_07208af4d184fc::t_c5dec424183334 1-36
+project/packages/space-dodge/tests/buffs.spec.js
+  s_07208af4d184fc::t_c5dec424183334 1-143
+project/.a3game-three.json
+  s_07208af4d184fc::t_cd91a885bab0cb 1-11
+project/.gitignore
+  s_07208af4d184fc::t_f37bc26cc74630 1-3
+project/index.html
+  s_07208af4d184fc::t_7ad1c95e97b1ad 1-18
+project/package-lock.json
+  s_07208af4d184fc::t_3a7dc4d8c4e27e 1-2661
+project/package.json
+  s_07208af4d184fc::t_29a2fe652dd4d2 1-27
+project/packages/a3game-playable/README.md
+  s_07208af4d184fc::t_8b581fb048225a 1-296
+project/packages/a3game-playable/package-lock.json
+  s_07208af4d184fc::t_4b537968bfd439 1-1451
+project/packages/a3game-playable/package.json
+  s_07208af4d184fc::t_de19733655aa6d 1-37
+project/packages/a3game-playable/src/components/identity-component.js
+  s_07208af4d184fc::t_1f3521129eb03f 1-85
+project/packages/a3game-playable/src/components/index.js
+  s_07208af4d184fc::t_5ee0cd96ad086a 1-7
+project/packages/a3game-playable/src/components/runtime-entity-component.js
+  s_07208af4d184fc::t_2f44be1bdf051a 1-141
+project/packages/a3game-playable/src/data-types/runtime-types.js
+  s_07208af4d184fc::t_5ab182fd4c6857 1-183
+project/packages/a3game-playable/src/engine/animation-director.js
+  s_07208af4d184fc::t_bf943d9c73b6ec 1-251
+project/packages/a3game-playable/src/engine/asset-library.js
+  s_07208af4d184fc::t_6c106c677d1ca5 1-850
+project/packages/a3game-playable/src/engine/cinematic-player.js
+  s_07208af4d184fc::t_d8465a17f48bac 1-251
+project/packages/a3game-playable/src/engine/collision-probe.js
+  s_07208af4d184fc::t_28e2bc2f399144 1-583
+project/packages/a3game-playable/src/engine/hud-layer.js
+  s_07208af4d184fc::t_515b1a03827ee8 1-335
+project/packages/a3game-playable/src/engine/index.js
+  s_07208af4d184fc::t_574a08044bd94d 1-91
+project/packages/a3game-playable/src/engine/input-router.js
+  s_07208af4d184fc::t_e8c7d9a2a722be 1-304
+project/packages/a3game-playable/src/engine/lightning-effect.js
+  s_07208af4d184fc::t_b14a5b7d4254d0 1-55
+project/packages/a3game-playable/src/engine/motion-kit.js
+  s_07208af4d184fc::t_ada8b2594176ec 1-1216
+project/packages/a3game-playable/src/engine/runtime-channel.js
+  s_07208af4d184fc::t_4eee8b56f434f1 1-194
+project/packages/a3game-playable/src/engine/runtime-host.js
+  s_07208af4d184fc::t_66b3a5791c3576 1-1177
+project/packages/a3game-playable/src/engine/scene-kit.js
+  s_07208af4d184fc::t_a578a3f178ba84 1-181
+project/packages/a3game-playable/src/engine/scene-loader.js
+  s_07208af4d184fc::t_97500a58dfa201 1-519
+project/packages/a3game-playable/src/engine/surface-flow.js
+  s_07208af4d184fc::t_65d677d39eb80f 1-429
+project/packages/a3game-playable/src/engine/vfx-kit.js
+  s_07208af4d184fc::t_509ba428e13584 1-1946
+project/packages/a3game-playable/src/engine/visual-kit.js
+  s_07208af4d184fc::t_15ea283e14bfb3 1-2295
+project/packages/a3game-playable/src/engine/water-body.js
+  s_07208af4d184fc::t_f2ebced04cd04b 1-176
+project/packages/a3game-playable/src/engine/wind-field.js
+  s_07208af4d184fc::t_718cc6b56540fd 1-114
+project/packages/a3game-playable/src/index.js
+  s_07208af4d184fc::t_c3271cc00dbe85 1-210
+project/packages/a3game-playable/src/interfaces/contracts.js
+  s_07208af4d184fc::t_817d1e46f6df5a 1-169
+project/packages/a3game-playable/src/subsystems/index.js
+  s_07208af4d184fc::t_a3fbe04a69ed6a 1-4
+project/packages/a3game-playable/src/subsystems/runtime-subsystem.js
+  s_07208af4d184fc::t_3f9e60bcce98bb 1-199
+project/packages/a3game-playable/src/subsystems/world-session-subsystem.js
+  s_07208af4d184fc::t_a2be1c220339fd 1-326
+project/packages/a3game-playable/tests/asset-base-url.spec.js
+  s_07208af4d184fc::t_3648e6fedfad4f 1-38
+project/packages/a3game-playable/tests/cinematic-player.spec.js
+  s_07208af4d184fc::t_cf5b09a708ec1e 1-134
+project/packages/a3game-playable/tests/hud-timing.spec.js
+  s_07208af4d184fc::t_b76382897ce219 1-73
+project/packages/a3game-playable/tests/orientation.spec.js
+  s_07208af4d184fc::t_21946b0fc080ac 1-309
+project/packages/a3game-playable/tests/realism-contracts.spec.js
+  s_07208af4d184fc::t_ff4c170b546fbd 1-151
+project/packages/a3game-playable/tests/realism.html
+  s_07208af4d184fc::t_7fb81b963a978f 1-55
+project/packages/a3game-playable/tests/runtime-realism.spec.js
+  s_07208af4d184fc::t_fcbf26970cd161 1-138
+project/packages/a3game-playable/tests/scene-kit.spec.js
+  s_07208af4d184fc::t_ec31bbe379508e 1-123
+project/packages/a3game-playable/tests/surface-flow.spec.js
+  s_07208af4d184fc::t_4a10322b278e52 1-283
+project/packages/a3game-playable/tests/water-interaction.spec.js
+  s_07208af4d184fc::t_042521a6f50fbf 1-248
+project/packages/a3game-playable/tests/wind-field.spec.js
+  s_07208af4d184fc::t_294a5cd040a91c 1-68
+project/packages/a3game-playable/tests/wind-fluid-demo.js
+  s_07208af4d184fc::t_c30bd62b10f53e 1-234
+project/packages/a3game-playable/tests/wind-fluid.html
+  s_07208af4d184fc::t_7438820923ead7 1-4
+project/packages/a3game-playable/tests/world-realism.spec.js
+  s_07208af4d184fc::t_f4bb69aaa856cc 1-70
+project/packages/a3game-playable/vitest.config.js
+  s_07208af4d184fc::t_accd2a80a7e978 1-18
+project/packages/space-dodge/package.json
+  s_07208af4d184fc::t_0d96a7e193796d 1-11
+project/packages/space-dodge/tools/balance.mjs
+  s_07208af4d184fc::t_25872bf88a5e98 1-78
+project/src/main.js
+  s_07208af4d184fc::t_35d3de4e2c43b1 1-4
+project/vite.config.js
+  s_07208af4d184fc::t_ecd412ee58fb5a 1-32
+project/vitest.config.js
+  s_07208af4d184fc::t_5654f58a1ebe1d 1-6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "84f8032b075e0f17666aceb9684e31e6aee4ec00",
+  "prompts": {},
+  "sessions": {
+    "s_07208af4d184fc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "149430da-42dd-4952-94e7-620d189aa533",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "linyesh <linyesh@amazon.com>"
+    }
+  }
+}
