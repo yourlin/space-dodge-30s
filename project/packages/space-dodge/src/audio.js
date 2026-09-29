@@ -25,6 +25,8 @@ const LEAD_BARS = [
   [67, 0, 71, 0, 74, 0, 71, 0],
 ];
 const BASE_BPM = 124;
+/** Events that can carry user activation (touchstart cannot). */
+const UNLOCK_EVENTS = ['pointerdown', 'pointerup', 'keydown', 'click', 'touchend'];
 
 const midiToHz = (note) => 440 * 2 ** ((note - 69) / 12);
 
@@ -51,9 +53,13 @@ export class SpaceDodgeAudio {
     this.warningBeepAt = 0;
     this.unsubscribe = simulation.onEvent((event) => this.#onEvent(event));
 
-    // Unlock on the first gesture anywhere on the page.
-    this.unlock = () => this.#ensureContext();
-    for (const type of ['pointerdown', 'keydown', 'touchstart']) {
+    // Create the context only inside an activating gesture; touchstart
+    // and modifier-only keys do not count, and Chrome warns if we try.
+    this.unlock = () => {
+      if (globalThis.navigator?.userActivation?.isActive === false) return;
+      this.#ensureContext();
+    };
+    for (const type of UNLOCK_EVENTS) {
       globalThis.addEventListener?.(type, this.unlock, { passive: true });
     }
   }
@@ -106,7 +112,7 @@ export class SpaceDodgeAudio {
   }
 
   toggleMuted() {
-    this.#ensureContext();
+    this.unlock();
     return this.setMuted(!this.muted);
   }
 
@@ -266,7 +272,7 @@ export class SpaceDodgeAudio {
 
   dispose() {
     this.unsubscribe();
-    for (const type of ['pointerdown', 'keydown', 'touchstart']) {
+    for (const type of UNLOCK_EVENTS) {
       globalThis.removeEventListener?.(type, this.unlock);
     }
     this.ctx?.close?.().catch?.(() => {});
