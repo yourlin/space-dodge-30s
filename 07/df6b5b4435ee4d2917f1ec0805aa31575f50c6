@@ -1,0 +1,19 @@
+project/package-lock.json
+  s_e1eba9fa1c3160::t_b065b9ba70c30b 23-26,2663-2669
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "07df6b5b4435ee4d2917f1ec0805aa31575f50c6",
+  "prompts": {},
+  "sessions": {
+    "s_e1eba9fa1c3160": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2eca39fc-e3e3-49c4-944e-6ef1180f86f9",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "linyesh <linyesh@amazon.com>"
+    }
+  }
+}
