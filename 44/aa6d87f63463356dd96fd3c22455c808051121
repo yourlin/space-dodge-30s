@@ -1,0 +1,19 @@
+project/packages/a3game-playable/src/engine/runtime-host.js
+  s_e1eba9fa1c3160::t_bfc321a37cd993 152-155,276,305,1011
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "44aa6d87f63463356dd96fd3c22455c808051121",
+  "prompts": {},
+  "sessions": {
+    "s_e1eba9fa1c3160": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2eca39fc-e3e3-49c4-944e-6ef1180f86f9",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "linyesh <linyesh@amazon.com>"
+    }
+  }
+}
