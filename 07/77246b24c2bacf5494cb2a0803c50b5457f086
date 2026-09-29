@@ -1,0 +1,29 @@
+project/packages/space-dodge/src/ui.js
+  s_e1eba9fa1c3160::t_3b52c0b4b3fe81 336
+project/packages/space-dodge/src/index.js
+  s_e1eba9fa1c3160::t_253160019c8135 85-86
+project/packages/space-dodge/src/touch.js
+  s_e1eba9fa1c3160::t_3533ebee4ec019 26,51
+  s_e1eba9fa1c3160::t_76adc68acb4dff 48
+  s_e1eba9fa1c3160::t_8863f01fe67849 2,4-12,16-25,27-31,34-35,38-47,49-50,52,57-59,61,71-75,77-91,96,98-100,109-110,112-122,135-142,144-169,173,184-186,188
+project/packages/space-dodge/src/view.js
+  s_e1eba9fa1c3160::t_76adc68acb4dff 390-392,399
+README.md
+  s_e1eba9fa1c3160::t_e09e9923b48f9e 20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "0777246b24c2bacf5494cb2a0803c50b5457f086",
+  "prompts": {},
+  "sessions": {
+    "s_e1eba9fa1c3160": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2eca39fc-e3e3-49c4-944e-6ef1180f86f9",
+        "model": "unknown"
+      },
+      "human_author": "linyesh <linyesh@amazon.com>"
+    }
+  }
+}
