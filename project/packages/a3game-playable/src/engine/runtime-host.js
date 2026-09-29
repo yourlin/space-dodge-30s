@@ -149,7 +149,10 @@ export class A3GameRuntimeHost {
      */
     this.sunDirection = new THREE.Vector3(0.35, 0.22, -1).normalize();
     this.wind = new A3GameWindField(options.wind ?? {});
-    this.clock = new THREE.Clock();
+    // THREE.Clock is deprecated since r183; Timer also skips the huge
+    // delta after a hidden tab once connected to the document.
+    this.clock = new THREE.Timer();
+    if (typeof document !== 'undefined') this.clock.connect(document);
     this.raycaster = new THREE.Raycaster();
     this.pointer = new THREE.Vector2();
 
@@ -270,7 +273,7 @@ export class A3GameRuntimeHost {
       throw new Error('A3GameRuntimeHost.init() must run before start()');
     }
     this.running = true;
-    this.clock.start();
+    this.clock.reset();
     const loop = () => {
       if (!this.running) return;
       this.frameHandle = requestAnimationFrame(loop);
@@ -299,7 +302,7 @@ export class A3GameRuntimeHost {
    * @param {number} [forcedDelta] seconds
    */
   tick(forcedDelta) {
-    const requested = forcedDelta === undefined ? this.clock.getDelta() : Number(forcedDelta);
+    const requested = forcedDelta === undefined ? this.clock.update().getDelta() : Number(forcedDelta);
     if (!Number.isFinite(requested) || requested < 0) {
       throw new RangeError('tick delta must be finite and non-negative');
     }
@@ -1005,6 +1008,7 @@ export class A3GameRuntimeHost {
 
   /** Release renderer, scene, and listener resources. */
   dispose() {
+    this.clock.dispose();
     this.stop();
     this.detachControls();
     this.tickListeners.clear();
