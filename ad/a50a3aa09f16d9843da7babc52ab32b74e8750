@@ -1,0 +1,21 @@
+project/packages/space-dodge/src/audio.js
+  s_e1eba9fa1c3160::t_e3cf032fe590f5 28-29,56-62,115,275
+project/public/assets/manifest.json
+  s_e1eba9fa1c3160::t_e3cf032fe590f5 1-3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "ada50a3aa09f16d9843da7babc52ab32b74e8750",
+  "prompts": {},
+  "sessions": {
+    "s_e1eba9fa1c3160": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2eca39fc-e3e3-49c4-944e-6ef1180f86f9",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "linyesh <linyesh@amazon.com>"
+    }
+  }
+}
