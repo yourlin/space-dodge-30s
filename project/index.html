@@ -1,18 +1,36 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>是男人就坚持30秒 · Space Dodge 3D</title>
+    <meta name="description" content="3D 太空版「是男人就坚持30秒」：驾驶飞船躲避陨石、流星雨与追踪导弹，拾取护盾/时缓/超频道具，挑战你的存活极限。支持键盘、手柄与触屏。" />
+    <meta name="theme-color" content="#05060f" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta property="og:title" content="是男人就坚持30秒 · Space Dodge 3D" />
+    <meta property="og:description" content="躲开陨石和追踪导弹，你能在太空中坚持 30 秒吗？" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <style>
-      html, body { margin: 0; height: 100%; background: #05060f; overflow: hidden; }
-      #a3game-viewport { position: absolute; inset: 0; }
-      #a3game-hud { position: absolute; inset: 0; pointer-events: none; }
+      html, body { margin: 0; height: 100%; background: #05060f; overflow: hidden;
+        overscroll-behavior: none; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+      #a3game-viewport { position: absolute; inset: 0; touch-action: none; }
+      #a3game-hud { position: absolute; inset: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); pointer-events: none; }
+      #sd-loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        color: #9fb6e8; font: 600 16px "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; letter-spacing: 2px; gap: 14px;
+        transition: opacity .4s; }
+      #sd-loading b { font-size: 28px; color: #35e0ff; letter-spacing: 3px; }
+      #sd-loading i { width: 36px; height: 36px; border-radius: 50%; border: 3px solid rgba(53,224,255,.2);
+        border-top-color: #35e0ff; animation: sd-spin 0.8s linear infinite; }
+      @keyframes sd-spin { to { transform: rotate(360deg); } }
     </style>
   </head>
   <body>
     <div id="a3game-viewport"></div>
     <div id="a3game-hud"></div>
+    <div id="sd-loading"><b>是男人就坚持30秒</b><i></i><span>正在加载…</span></div>
+    <noscript style="color:#fff">需要启用 JavaScript 才能游玩。</noscript>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

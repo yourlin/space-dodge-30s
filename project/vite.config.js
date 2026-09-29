@@ -13,9 +13,14 @@ const server = {
 };
 
 export default defineConfig({
+  // Relative asset URLs so the build works from any sub-path
+  // (e.g. GitHub Pages at https://<user>.github.io/<repo>/).
+  base: './',
   server,
   preview: server,
   resolve: {
+    // One three.js instance for the game and the framework package.
+    dedupe: ['three'],
     alias: {
       '@': resolve(process.cwd(), 'src'),
       '@a3game/playable': resolve(
@@ -26,7 +31,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false,
     target: 'es2022',
   },
 });

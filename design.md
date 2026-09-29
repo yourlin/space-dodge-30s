@@ -33,4 +33,6 @@
 | T4 试玩录像 | validation | done | `eval/mechanic/space_dodge_core/playtest/<take>/video.mp4`，14 个动作全部执行，0 页面错误 |
 | T7 道具与时间流速 | mechanic+ui | done | `tests/buffs.spec.js` 8/8；浏览器截图（护盾罩、×1.6 标记、倒计时条） |
 | T5 正式美术替换（飞船/陨石/导弹 GLB） | asset | needs_detail | 需要 Meshy/Tripo API key |
-| T6 音效（引擎、爆炸、预警） | asset | needs_detail | 需要音频 API key 或授权素材 |
+| T6 音效（引擎、爆炸、预警） | asset | done | `audio.js` Web Audio 程序化合成 SFX + 背景音乐（节奏随 timeScale），M 键/按钮静音并持久化 |
+| T8 触屏 / 手柄 / 竖屏适配 | ui | done | `touch.js` 浮动虚拟摇杆；手柄轮询；`view.js` 按宽高比自动拉远相机，竖屏旋转视角；响应式卡片 |
+| T9 发布 GitHub Pages | release | done | `vite base: './'`；`.github/workflows/pages.yml` 测试→构建→部署 |

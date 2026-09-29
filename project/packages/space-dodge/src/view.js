@@ -350,14 +350,64 @@ export class SpaceDodgeView {
     });
 
     // Camera: tilted top-down view that keeps the whole arena framed.
+    // Portrait screens look along the arena's long axis instead, so a
+    // phone held upright still gets a big play field.
     host.detachControls?.();
-    host.camera.position.set(0, 27, 16.5);
-    host.camera.lookAt(0, 0, 1.2);
+    this.arena = arena;
+    this.portrait = false;
+    this.cameraBase = new THREE.Vector3();
+    this.cameraTarget = new THREE.Vector3();
+    this.ship.rotation.order = 'YXZ';
+    this.#fitCamera();
+    this.stopResize = host.onResize?.(() => this.#fitCamera());
     this.shake = 0;
-    this.cameraBase = host.camera.position.clone();
     this.time = 0;
 
     this.unsubscribe = simulation.onEvent((event) => this.#onEvent(event));
+  }
+
+  /**
+   * Map a screen-space move vector (x right, y up) to the simulation's
+   * input frame, which is fixed to the landscape arena.
+   */
+  screenToSim(x, y) {
+    return this.portrait ? { moveX: -y, moveY: x } : { moveX: x, moveY: y };
+  }
+
+  /** Choose orientation and pull the camera back until the arena fits. */
+  #fitCamera() {
+    const camera = this.host.camera;
+    const aspect = camera.aspect || 16 / 9;
+    this.portrait = aspect < 0.9;
+    const offset = this.portrait ? new THREE.Vector3(16.5, 27, 0) : new THREE.Vector3(0, 27, 16.5);
+    const target = this.portrait ? new THREE.Vector3(1.2, 0, 0) : new THREE.Vector3(0, 0, 1.2);
+    this.ship.rotation.y = this.portrait ? Math.PI / 2 : 0;
+    const { halfWidth: w, halfDepth: d } = this.arena;
+    const m = 1.2;
+    const corners = [[-w - m, -d - m], [w + m, -d - m], [w + m, d + m], [-w - m, d + m]]
+      .map(([x, z]) => new THREE.Vector3(x, 0, z));
+    const probe = new THREE.Vector3();
+    const fits = (k) => {
+      camera.position.copy(offset).multiplyScalar(k);
+      camera.lookAt(target);
+      camera.updateMatrixWorld(true);
+      // Leave room for the timer and goal bar across the top.
+      return corners.every((c) => {
+        probe.copy(c).project(camera);
+        return Math.abs(probe.x) <= 0.97 && probe.y >= -0.97 && probe.y <= 0.8;
+      });
+    };
+    let lo = 0.5;
+    let hi = 4;
+    for (let i = 0; i < 24; i += 1) {
+      const mid = (lo + hi) / 2;
+      if (fits(mid)) hi = mid;
+      else lo = mid;
+    }
+    // Never zoom in past the tuned desktop framing.
+    fits(Math.max(1, hi));
+    this.cameraBase.copy(camera.position);
+    this.cameraTarget.copy(target);
   }
 
   #onEvent(event) {
@@ -395,18 +445,22 @@ export class SpaceDodgeView {
 
     // Ship: position, banking from lateral input, engine pulse.
     this.ship.position.set(player.x, 0, player.z);
-    const targetBank = -THREE.MathUtils.clamp(player.vx / 11, -1, 1) * 0.55;
+    // Bank and pitch against screen-relative velocity.
+    const lateral = this.portrait ? -player.vz : player.vx;
+    const forward = this.portrait ? -player.vx : -player.vz;
+    const targetBank = -THREE.MathUtils.clamp(lateral / 11, -1, 1) * 0.55;
     this.bank += (targetBank - this.bank) * (1 - Math.exp(-10 * dt));
     this.ship.rotation.z = this.bank;
-    this.ship.rotation.x = THREE.MathUtils.clamp(-player.vz / 11, -1, 1) * 0.25;
+    this.ship.rotation.x = THREE.MathUtils.clamp(forward / 11, -1, 1) * 0.25;
     const pulse = 0.85 + 0.15 * Math.sin(this.time * 40);
     this.ship.userData.engine.scale.set(pulse, pulse, 1);
     this.ship.userData.halo.material.opacity = player.precision ? 0.9 : 0.5;
     if (this.ship.visible && player.alive) {
       const moving = Math.hypot(player.vx, player.vz) > 1 || Math.abs(input.moveY ?? 0) > 0;
+      const back = this.portrait ? [1, 0, 0] : [0, 0, 1];
       this.vfx.play('thrust', {
-        position: [player.x, 0, player.z + 0.85],
-        direction: [0, 0, 1],
+        position: [player.x + back[0] * 0.85, 0, player.z + back[2] * 0.85],
+        direction: back,
         count: moving ? 3 : 1,
       });
     }
@@ -477,6 +531,7 @@ export class SpaceDodgeView {
       this.cameraBase.y + (Math.random() - 0.5) * s,
       this.cameraBase.z + (Math.random() - 0.5) * s,
     );
+    this.host.camera.lookAt(this.cameraTarget);
     this.planet.rotation.y += dt * 0.02;
   }
 
@@ -562,6 +617,7 @@ export class SpaceDodgeView {
 
   dispose() {
     this.unsubscribe();
+    this.stopResize?.();
     for (const id of [...this.pickupViews.keys()]) this.#removePickupView(id);
     for (const id of [...this.hazardViews.keys()]) this.#removeHazardView(id);
     this.vfx.dispose();

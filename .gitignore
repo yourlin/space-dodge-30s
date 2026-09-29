@@ -6,3 +6,4 @@ dist/
 .a3game/reports/
 .DS_Store
 *.log
+project/.a3game-three.json

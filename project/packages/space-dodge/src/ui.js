@@ -64,7 +64,29 @@ const STYLE = `
 .sd-buff-slow .a3game-hud-bar > i { background:#6fb8ff !important; }
 .sd-buff-overclock .a3game-hud-bar > i { background:#ffa51f !important; }
 .sd-warn { position:absolute; inset:0; pointer-events:none; box-shadow: inset 0 0 90px rgba(255,40,40,.0); transition: box-shadow .15s; }
+.sd-card { box-sizing:border-box; min-width:min(420px, 94vw); max-width:min(560px, 94vw); max-height:94vh; overflow-y:auto; }
+.sd-tools { position:absolute; right:14px; bottom:14px; display:flex; gap:8px; pointer-events:auto; }
+.sd-tool { width:44px; height:44px; border-radius:50%; border:1px solid rgba(61,123,255,.6); background:rgba(8,14,34,.7);
+  color:#e8f4ff; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
+.sd-tool:active { transform:scale(.92); }
+.sd-copied { font-size:13px; color:#7dffb2; margin-top:6px; min-height:18px; }
+@media (max-width: 640px), (max-height: 520px) {
+  .sd-card { padding:16px 18px; }
+  .sd-title { font-size:28px; }
+  .sd-big { font-size:40px; }
+  .sd-sub, .sd-row { font-size:13px; }
+  .sd-legend { font-size:12px; gap:8px; margin:8px 0 2px; }
+  .sd-btn { margin-top:10px; padding:9px 20px; font-size:15px; }
+  .sd-board { font-size:12px; margin-top:8px; }
+  .sd-toast { font-size:20px; top:18%; }
+  .sd-timer { font-size:32px !important; }
+  .a3game-hud-slot[data-a3game-anchor="bottom-left"] { display:none; }
+  .a3game-hud-widget { font-size:12px; }
+}
 `;
+
+/** Touch-first devices get touch hints; a mouse or keyboard keeps key hints. */
+const COARSE_POINTER = Boolean(globalThis.matchMedia?.('(pointer: coarse)').matches);
 
 function formatSeconds(value) {
   return `${Number(value).toFixed(2)} s`;
@@ -74,9 +96,11 @@ export class SpaceDodgeUi {
   /**
    * @param {{hudContainer: string | HTMLElement, simulation: object, host: object}} options
    */
-  constructor({ hudContainer, simulation, host }) {
+  constructor({ hudContainer, simulation, host, audio }) {
     this.simulation = simulation;
     this.host = host;
+    this.audio = audio;
+    this.touch = COARSE_POINTER;
     this.hud = new A3GameHudLayer({ container: hudContainer });
     this.container = this.hud.container;
 
@@ -120,11 +144,30 @@ export class SpaceDodgeUi {
     this.overlay.dataset.screen = '';
     this.container.appendChild(this.overlay);
     this.overlay.addEventListener('click', (event) => {
-      const action = event.target?.dataset?.action;
+      const action = event.target?.closest?.('[data-action]')?.dataset?.action;
       if (action === 'start') simulation.phase === SpaceDodgePhase.PAUSED ? simulation.togglePause() : simulation.start();
-      if (action === 'clear') simulation.clearRecords();
+      if (action === 'restart') simulation.restart();
+      if (action === 'clear' && globalThis.confirm?.('确定清空所有本机记录？') !== false) simulation.clearRecords();
+      if (action === 'share') {
+        this.#share();
+        return;
+      }
       this.#renderScreen();
     });
+
+    // Always-on buttons: needed on touch screens, handy with a mouse.
+    this.tools = document.createElement('div');
+    this.tools.className = 'sd-tools';
+    this.tools.innerHTML = `<button class="sd-tool" data-tool="mute" title="静音 (M)"></button>
+      <button class="sd-tool" data-tool="pause" title="暂停 (P)">⏸</button>`;
+    this.container.appendChild(this.tools);
+    this.tools.addEventListener('click', (event) => {
+      const tool = event.target?.closest?.('[data-tool]')?.dataset?.tool;
+      if (tool === 'mute') this.toggleMute();
+      if (tool === 'pause') simulation.togglePause();
+      event.target?.closest?.('button')?.blur();
+    });
+    this.#renderTools();
 
     this.unsubscribe = simulation.onEvent((event) => this.#onEvent(event));
     this.#renderScreen();
@@ -148,6 +191,47 @@ export class SpaceDodgeUi {
     } else if (['run_started', 'paused', 'resumed', 'records_cleared'].includes(event.type)) {
       this.resultDelay = 0;
       this.#renderScreen();
+    }
+    if (['run_started', 'paused', 'resumed', 'player_destroyed'].includes(event.type)) this.#renderTools();
+  }
+
+  toggleMute() {
+    this.audio?.toggleMuted();
+    this.#renderTools();
+    this.#showToast(this.audio?.muted ? '🔇 已静音' : '🔊 声音开启', 0.9);
+  }
+
+  /** The touch flag flips on at the first touch, even on hybrid devices. */
+  setTouchMode(touch) {
+    if (this.touch === touch) return;
+    this.touch = touch;
+    this.#renderScreen();
+  }
+
+  #renderTools() {
+    const mute = this.tools.querySelector('[data-tool="mute"]');
+    mute.textContent = this.audio?.muted ? '🔇' : '🔊';
+    const pause = this.tools.querySelector('[data-tool="pause"]');
+    pause.style.display = this.simulation.phase === SpaceDodgePhase.PLAYING ? 'flex' : 'none';
+  }
+
+  async #share() {
+    const run = this.simulation.lastRun;
+    if (!run) return;
+    const url = globalThis.location?.href?.split('#')[0] ?? '';
+    const text = run.goalReached
+      ? `我在「是男人就坚持30秒 · 3D太空版」坚持了 ${run.seconds.toFixed(2)} 秒，擦弹 ${run.nearMisses} 次，你能超过我吗？`
+      : `我在「是男人就坚持30秒 · 3D太空版」只坚持了 ${run.seconds.toFixed(2)} 秒……你来试试？`;
+    const note = this.overlay.querySelector('.sd-copied');
+    try {
+      if (navigator.share && this.touch) {
+        await navigator.share({ title: '是男人就坚持30秒', text, url });
+        return;
+      }
+      await navigator.clipboard.writeText(`${text} ${url}`);
+      if (note) note.textContent = '✔ 战绩已复制，去粘贴给朋友吧';
+    } catch {
+      if (note) note.textContent = '复制失败，请手动截图分享';
     }
   }
 
@@ -248,17 +332,20 @@ export class SpaceDodgeUi {
         <h1 class="sd-title">是男人就坚持30秒</h1>
         <p class="sd-sub">SPACE DODGE 3D · 驾驶飞船躲开陨石与追踪导弹</p>
         ${this.#legend()}
-        <div class="sd-row">WASD / 方向键 移动 · 按住 Shift 精准慢速</div>
+        ${this.touch
+          ? '<div class="sd-row">在屏幕任意位置按住拖动 = 虚拟摇杆，轻推慢速微调</div>'
+          : '<div class="sd-row">WASD / 方向键 移动 · 按住 Shift 精准慢速 · M 静音 · 支持手柄</div>'}
         <div class="sd-row">红色闪烁圈 = 导弹即将发射，横向急转可甩掉它</div>
         <div class="sd-row">道具：🛡 护盾挡一次 · 🐢 时缓 ×0.5 · ⚡ 超频 ×1.6（计时更快，弹幕也更快）</div>
-        <button class="sd-btn" data-action="start">开始游戏（空格）</button>
+        <button class="sd-btn" data-action="start">开始游戏${this.touch ? '' : '（空格）'}</button>
         ${this.#board(state)}
       </div>`;
     } else if (state.phase === SpaceDodgePhase.PAUSED) {
       screen = 'paused';
       html = `<div class="sd-card"><h1 class="sd-title">暂停</h1>
         <div class="sd-big">${formatSeconds(state.elapsedSeconds)}</div>
-        <button class="sd-btn" data-action="start">继续（P / 空格）</button></div>`;
+        <button class="sd-btn" data-action="start">继续${this.touch ? '' : '（P / 空格）'}</button>
+        <button class="sd-btn secondary" data-action="restart">重新开始</button></div>`;
     } else if (state.phase === SpaceDodgePhase.GAME_OVER && state.lastRun) {
       screen = 'game_over';
       const run = state.lastRun;
@@ -271,8 +358,10 @@ export class SpaceDodgeUi {
         ${run.newBest ? '<div class="sd-row sd-gold">★ 新纪录！</div>' : ''}
         ${verdict}
         <div class="sd-row">击毁你的：${KILLER_NAMES[run.killedBy] ?? run.killedBy} · 擦弹 ${run.nearMisses} · 躲过 ${run.dodged} · 道具 ${run.buffsCollected ?? 0}</div>
-        <button class="sd-btn" data-action="start">再来一局（空格）</button>
+        <button class="sd-btn" data-action="start">再来一局${this.touch ? '' : '（空格）'}</button>
+        <button class="sd-btn secondary" data-action="share">分享战绩</button>
         <button class="sd-btn secondary" data-action="clear">清空记录</button>
+        <div class="sd-copied"></div>
         ${this.#board(state, run.rank)}
       </div>`;
     }
@@ -289,6 +378,7 @@ export class SpaceDodgeUi {
   dispose() {
     this.unsubscribe();
     this.overlay.remove();
+    this.tools.remove();
     this.toast.remove();
     this.warn.remove();
     this.tint.remove();
