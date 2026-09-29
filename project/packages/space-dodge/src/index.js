@@ -82,7 +82,8 @@ export async function startSpaceDodge(options = {}) {
   const view = new SpaceDodgeView({ host, simulation });
   const audio = new SpaceDodgeAudio({ simulation, storage });
   const ui = new SpaceDodgeUi({ hudContainer, simulation, host, audio });
-  const stick = new TouchStick({ target: host.container, overlay: ui.container });
+  const stick = new TouchStick({ onTouch: () => ui.setTouchMode(true) });
+  if (ui.touch) stick.setEnabled(true);
 
   const input = new A3GameInputRouter({
     target: host.container,
@@ -122,7 +123,6 @@ export async function startSpaceDodge(options = {}) {
     let screen = { x: keys.moveX, y: keys.moveY };
     if (stick.active) screen = stick.vector;
     else if (pad.active) screen = pad.vector;
-    ui.setTouchMode(ui.touch || stick.used);
     lastInput = { ...keys, ...view.screenToSim(screen.x, screen.y), run: keys.run || pad.precision };
     simulation.step(dt, lastInput);
     view.update(dt, lastInput);

@@ -333,7 +333,7 @@ export class SpaceDodgeUi {
         <p class="sd-sub">SPACE DODGE 3D · 驾驶飞船躲开陨石与追踪导弹</p>
         ${this.#legend()}
         ${this.touch
-          ? '<div class="sd-row">在屏幕任意位置按住拖动 = 虚拟摇杆，轻推慢速微调</div>'
+          ? '<div class="sd-row">在控制区（竖屏在下方，横屏在左侧）按住拖动操控飞船，轻推慢速微调</div>'
           : '<div class="sd-row">WASD / 方向键 移动 · 按住 Shift 精准慢速 · M 静音 · 支持手柄</div>'}
         <div class="sd-row">红色闪烁圈 = 导弹即将发射，横向急转可甩掉它</div>
         <div class="sd-row">道具：🛡 护盾挡一次 · 🐢 时缓 ×0.5 · ⚡ 超频 ×1.6（计时更快，弹幕也更快）</div>

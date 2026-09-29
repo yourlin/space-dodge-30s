@@ -387,14 +387,16 @@ export class SpaceDodgeView {
     const corners = [[-w - m, -d - m], [w + m, -d - m], [w + m, d + m], [-w - m, d + m]]
       .map(([x, z]) => new THREE.Vector3(x, 0, z));
     const probe = new THREE.Vector3();
+    // Leave ~100 px for the timer and goal bar across the top.
+    const heightPx = this.host.container?.clientHeight || 720;
+    const top = Math.min(0.8, 1 - (2 * 100) / heightPx);
     const fits = (k) => {
       camera.position.copy(offset).multiplyScalar(k);
       camera.lookAt(target);
       camera.updateMatrixWorld(true);
-      // Leave room for the timer and goal bar across the top.
       return corners.every((c) => {
         probe.copy(c).project(camera);
-        return Math.abs(probe.x) <= 0.97 && probe.y >= -0.97 && probe.y <= 0.8;
+        return Math.abs(probe.x) <= 0.97 && probe.y >= -0.97 && probe.y <= top;
       });
     };
     let lo = 0.5;
